@@ -9,6 +9,7 @@ import (
 
 func main() {
 	var c rune
+	//open registry key
 	k, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace`, registry.ALL_ACCESS)
 	if err != nil {
 		log.Fatal(err)
@@ -30,6 +31,7 @@ func main() {
 		getCase(c, k, v)
 	}
 
+	//close registry key
 	if err := k.Close(); err != nil {
 		log.Fatal(err)
 	}
@@ -38,6 +40,7 @@ func main() {
 	}
 }
 
+//get what folder to modify
 func getCase(c rune, k registry.Key, v registry.Key) {
 
 	switch c {
@@ -47,8 +50,8 @@ func getCase(c rune, k registry.Key, v registry.Key) {
 		fmt.Println("Download is disabled")
 		break
 	case '2':
-		changeValue("{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", "-{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", k)
-		changeValue("{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", "-{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", v)
+		changeValue("{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", "-{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", k) //or {31C0DD25-9439-4F12-BF41-7FF4EDA38722}
+		changeValue("{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", "-{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", v) //or {31C0DD25-9439-4F12-BF41-7FF4EDA38722}
 		fmt.Println("3D Objects Disabled")
 		break
 	case '3':
@@ -85,6 +88,7 @@ func getCase(c rune, k registry.Key, v registry.Key) {
 	}
 }
 
+//changing the value of the key
 func changeValue(name, value string, k registry.Key) {
 	if err := k.SetStringValue(name, value); err != nil {
 		log.Fatal(err)
