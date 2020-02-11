@@ -9,15 +9,6 @@ import (
 
 func main() {
 	var c rune
-	//open registry key
-	/*	k, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace`, registry.ALL_ACCESS)
-		if err != nil {
-			log.Fatal(err)
-		}
-		v, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace`, registry.ALL_ACCESS)
-		if err != nil {
-			log.Fatal(err)
-		} */
 
 	fmt.Print("1) Downloads\n")
 	fmt.Print("2) 3D Objects\n")
@@ -83,11 +74,8 @@ func getCase(c rune) {
 	}
 }
 
-//changing the value of the key
+//change the key
 func changeValue(value string) bool {
-	/*	if err := k.SetStringValue(name, value); err != nil {
-		log.Fatal(err)
-	} */
 	k, exist, err := registry.CreateKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\-`+value, registry.ALL_ACCESS)
 	check(err)
 	v, exist, err := registry.CreateKey(registry.LOCAL_MACHINE, `SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\-`+value, registry.ALL_ACCESS)
@@ -97,6 +85,7 @@ func changeValue(value string) bool {
 	return exist
 }
 
+//delete the old key
 func deleteValue(value string, exist bool) {
 	k, kExist, e := registry.CreateKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\`+value, registry.ALL_ACCESS)
 	check(e)
@@ -114,6 +103,7 @@ func deleteValue(value string, exist bool) {
 	v.Close()
 }
 
+//check for error
 func check(e error) {
 	if e != nil {
 		log.Fatal(e)
